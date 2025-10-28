@@ -40,6 +40,10 @@ updatePokemon(app);
 import deletePokemon from './src/routes/deletePokemon.js';
 deletePokemon(app);
 
+//login
+import login from './src/routes/login.js';
+login(app)
+
 //traitement des erreurs
 app.use(({res}) => {
   const message = `Impossible de trouver la ressource demandée ! Vous pouvez essayer une autre URL.`;
