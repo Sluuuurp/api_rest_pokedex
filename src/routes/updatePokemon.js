@@ -1,6 +1,6 @@
 // routes/updatePokemon.mjs
 import { Pokemon } from "../db/sequelize.js";
-import { ValidationError } from "sequelize";
+import { ValidationError, UniqueConstraintError } from "sequelize";
 
 const authorizedFfields = ["name", "hp", "cp", "types", "picture"]; // <-- Ligne ajoutée
 
@@ -18,12 +18,12 @@ const updatePokemon = (app) => {
       where: { id: id },
     })
       .then((_) => {
-        return Pokemon.findByPk(id).then(result => {
+        return Pokemon.findByPk(id).then((result) => {
           if (result === null) {
             const message = `Le pokémon demandée n'existe pas. Réessayez avec un autre identifiant.`;
             return res.status(404).json({ message });
           }
-          const pokemon = result.get({ plain: true});
+          const pokemon = result.get({ plain: true });
           delete pokemon.types_string;
           const message = `Le pokémon ${pokemon.name} a bien modifié.`;
           res.json({ message: message, data: pokemon });
@@ -31,6 +31,9 @@ const updatePokemon = (app) => {
       })
       .catch((error) => {
         if (error instanceof ValidationError) {
+          return res.status(400).json({ message: error.message, data: error });
+        }
+        if (error instanceof UniqueConstraintError) {
           return res.status(400).json({ message: error.message, data: error });
         }
         const message = `le pokémon n'a pas pu être modifié. Réesayez dans quelques instants.`;
