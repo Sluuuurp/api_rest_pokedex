@@ -1,11 +1,12 @@
 // routes/updatePokemon.mjs
 import { Pokemon } from "../db/sequelize.js";
 import { ValidationError, UniqueConstraintError } from "sequelize";
+import auth from "../auth/auth.js";
 
 const authorizedFfields = ["name", "hp", "cp", "types", "picture"]; // <-- Ligne ajoutée
 
 const updatePokemon = (app) => {
-  app.put("/api/pokemons/:id", async (req, res) => {
+  app.put("/api/pokemons/:id", auth, async (req, res) => {
     const id = req.params.id;
     for (const field in req.body) {
       if (!authorizedFfields.includes(field)) {

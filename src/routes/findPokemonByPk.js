@@ -1,8 +1,9 @@
 // routes/findPokemonById.mjs
 import { Pokemon } from "../db/sequelize.js";
+import auth from "../auth/auth.js";
 
 const getPokemonById = (app) => {
-  app.get("/api/pokemons/:id", async (req, res) => {
+  app.get("/api/pokemons/:id", auth, async (req, res) => {
     Pokemon.findByPk(req.params.id)
       .then((result) => {
         if (result === null) {

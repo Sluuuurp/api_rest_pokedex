@@ -5,6 +5,7 @@ import serveFavicon from 'serve-favicon';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { initDb } from './src/db/sequelize.js';
+import auth from './src/auth/auth.js';
 
 // Nécessaire pour __dirname en ESM
 const __filename = fileURLToPath(import.meta.url);

@@ -1,8 +1,9 @@
 // routes/deletePokemon.mjs
 import { Pokemon } from "../db/sequelize.js";
+import auth from "../auth/auth.js";
 
 const deletePokemon = (app) => {
-  app.delete("/api/pokemons/:id", async (req, res) => {
+  app.delete("/api/pokemons/:id", auth, async (req, res) => {
     Pokemon.findByPk(req.params.id)
       .then((result) => {
         if (result === null) {

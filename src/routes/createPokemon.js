@@ -1,11 +1,12 @@
 // routes/createPokemon.mjs
 import { Pokemon } from "../db/sequelize.js";
 import { ValidationError, UniqueConstraintError } from "sequelize";
+import auth from "../auth/auth.js";
 
 const authorizedFfields = ["name", "hp", "cp", "types", "picture"];
 
 const createPokemon = (app) => {
-  app.post("/api/pokemons", (req, res) => {
+  app.post("/api/pokemons", auth, (req, res) => {
     for (const field in req.body) {
       if (!authorizedFfields.includes(field)) {
         const message = `La propriété '${field}' n'ai pas modifiable. Seules les propriétés suivantes le sont : ${authorizedFfields}`;
